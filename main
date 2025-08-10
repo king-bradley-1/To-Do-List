@@ -1,0 +1,66 @@
+def read_file():
+    with open("to_dos.txt", mode="r", encoding="utf-8") as f:
+        data = f.readlines()
+        return [x.strip() for x in data]
+
+
+def write_file(new_to_dos):
+    with open("to_dos.txt", mode="w", encoding="utf-8") as f:
+        for to_do in new_to_dos:
+            f.write(f"{to_do}\n")
+
+
+def add(to_do):
+    current_todos = read_file()
+    if to_do not in current_todos:
+        current_todos.append(to_do)
+        write_file(current_todos)
+    else:
+        print(f"Duplicate entry. '{to_do}' is already present in your list of To-Dos.")
+
+
+def delete(to_do):
+    current_todos = read_file()
+    try:
+        current_todos.remove(to_do)
+        write_file(current_todos)
+    except ValueError:
+        print(f"'{to_do}' is not present in the current list of To-Dos.")
+
+
+def update(to_do, new_to_do):
+    current_todos = read_file()
+    if to_do not in current_todos:
+        print(f"'{to_do}' not found in current list of To-Dos.")
+    else:
+        try:
+            index_of_to_do = current_todos.index(to_do)
+            current_todos.remove(to_do)
+            if new_to_do not in current_todos:
+                current_todos.insert(index_of_to_do, new_to_do)
+            write_file(current_todos)
+        except ValueError:
+            print("This item is not present in the current list of To-Dos.")
+
+
+def show():
+    current_todos = read_file()
+    if not current_todos:
+        print("Current list is empty. Add some To-Dos to view the info.")
+    for i, v in enumerate(current_todos):
+        print(f"{i + 1}. {v}")
+
+
+if __name__ == "__main__":
+    show()
+    add("Buy Milk.")
+    add("Buy Milk.")
+    add("Buy Serial.")
+    add("Exercise.")
+    add("Pick up kids from school.")
+    add("Pay Rent.")
+    add("Take out trash.")
+    update("Buy Serial.", "Buy Cereal.")
+    show()
+    delete("Exercise.")
+    show()
