@@ -1,7 +1,12 @@
 def read_file():
-    with open("to_dos.txt", mode="r", encoding="utf-8") as f:
-        data = f.readlines()
-        return [x.strip() for x in data]
+    try:
+        with open("to_dos.txt", mode="r", encoding="utf-8") as f:
+            data = f.readlines()
+            return [x.strip() for x in data]
+    except FileNotFoundError:
+        with open("to_dos.txt", mode="w", encoding="utf-8") as f:
+            f.write("")
+            read_file()
 
 
 def write_file(new_to_dos):
@@ -47,8 +52,9 @@ def show():
     current_todos = read_file()
     if not current_todos:
         print("Current list is empty. Add some To-Dos to view the info.")
-    for i, v in enumerate(current_todos):
-        print(f"{i + 1}. {v}")
+    else:
+        for i, v in enumerate(current_todos):
+            print(f"{i + 1}. {v}")
 
 
 if __name__ == "__main__":
